@@ -1,10 +1,10 @@
 # A study on the mysterious class AB amplifier
 
-It's pretty common in literature to depict the class B and AB amplifiers as two transistors conducting alternatively as the input signal varies. The NPN takes care of the upper wave while the PNP handles the negative part.
+It's pretty common in literature to depict the class B and AB amplifiers as two bipolar transistors conducting alternatively as the input signal varies. The NPN takes care of the upper wave while the PNP handles the negative part.
 
 The difference between class AB and class B consists in a subtle biasing that pre-heats (so to speak) the two transistors, thus avoiding the infamous **cross-over distortion**.
 
-Assuming the cross-over is dealt with properly, I've always been puzzled by how nicely the handover goes between the two transistors as the input crosses zero. How come it works so well without any bumps?
+Assuming the cross-over is dealt with properly, I've always been puzzled by how nicely **the handover goes between the two transistors** as the input crosses zero. How come it works so well without any bumps?
 
 Moreover, as the input goes, one of the transistors might even reach the blocked region without consequences on the output.
 
@@ -45,22 +45,36 @@ So I was off simulating the circuit myself. Turns out it's not as tricky as it s
 
 ## Simulating a simplified large signal model, the DIY way
 
-Let's reduce the NPN and PNP to a simple Voltage Controlled Current Source (VCCS). 
+Let's reduce the NPN and PNP to a simple **Voltage Controlled Current Source** (VCCS). 
 
-Also, we abstract the i/v relationship with a sober I<sub>E</sub> = f(Vbe) for the NPN, and Ie = g(Veb) for the PNP. Forget about the base current participating to Ie. Actually, let's completely forget about the exponential behaviour. Let's just assume f(x) and g(x) being monotonic in x, with a decent slope.
-Then Vout is simply:
+Also, we abstract the i/v relationship with a sober:
+- I<sub>E</sub> = f(V<sub>BE</sub>) for the NPN,
+- I<sub>E</sub> = g(V<sub>EB</sub>) for the PNP.
 
-As such, the equation is actually and implicit equation for which there's little chance to find a closed form for v_out, in particular when f and g are exponentials.
+Forget about the base current participating to I<sub>E</sub>. 
 
-One approach would be setting v_out to a 'plausible' value, and reinjecting it to the rest of the equations, giving a new value for v_out, and hoping that it would improve the approximation. 
+Actually, let's completely forget about the exponential behaviour of the bipolar transistor. 
+Let's just assume ```f(x)``` and ```g(x)``` being monotonic in ```x```, with a _decent_ slope.
 
-While this method works quite well for a resistor + diode circuit, it behaved poorly here, being very unstable.
+Then ```v_out``` is simply:
+
+[TODO: add equation]
+
+As such, the equation is actually and implicit equation for which there's little chance to find a closed form for ```v_out```, in particular when ```f``` and ```g``` are exponential-like.
+
+One approach would be setting ```v_out``` to a 'plausible' value, and reinjecting it to the rest of the equations, giving a new value for ```v_out```, and _hoping_ that the approximation would improve itself.
+
+While this method works quite well for a classic resistor + diode circuit, it behaves poorly here (unstable).
 Maybe a proper rewrite of the equation (in terms of log instead of exp) could solve the issue, but I didn't really want to bother digging into the numerical stability aspects for now.
 
-To find the operating point, we can just use a crude brute-force exploration. The real circuit works, it doesn't blow off, so there must be a finite and realistic value for v_out. We have a clue of the range v_out lives in, let's just try a lot of values until there's a decent match between v_out and f(...) - g(...) 
+To find the operating point, we can just use a crude **brute-force exploration**.
+
+The real circuit works, it doesn't blow off, so there **must** be a finite and realistic value for ```v_out```. 
+We have a clue of the range v_out lives in, let's just try a lot of values until there's a decent match between v_out and f(...) - g(...) 
 
 A simple min-finding makes it pretty easy to find the operating point: 
 
+[TODO: add curve]
 
 That being done, we were on the right tracks for a simple simulation with a sinewave input.
 Results with an incorrect cross-over compensation:
