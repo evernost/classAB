@@ -131,7 +131,8 @@ This circuit must have some sort of hidden feedback somewhere.
 
 Starting from v_out = f(x) - g(...), here's an attempt for a block diagram representation of the circuit: 
 
-[TODO: add block diagram]
+![feedback_diagram](https://github.com/user-attachments/assets/f5796714-944c-40b2-a4a1-b4d5bac4fc05)
 
-Here comes the feedback loop!
+Here comes the feedback loop, in a somewhat op-amp-ish form.
+
 It is worth noting that this is more of an abstract representation. In real life, we can't really dissociate the emitter potential from the current going to the load that easily.
