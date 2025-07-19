@@ -1,19 +1,19 @@
-# A study on the _mysterious_ class AB amplifier
+# A study on the class AB amplifier
 
 It's pretty common in literature to depict the class B and AB amplifiers as two bipolar transistors conducting alternatively as the input signal varies. The NPN takes care of the upper wave while the PNP handles the negative part.
 
 [TODO: add schematic]
 
-The difference between class AB and class B consists in a subtle biasing that *pre-heats* (so to speak) the two transistors, thus avoiding the infamous **cross-over distortion**.
+Class B and class AB differ in a subtle biasing that *pre-heats* the two transistors, thus avoiding the infamous **cross-over distortion** in a class B.
 
-Assuming the cross-over is dealt with properly (resistor, diodes, 'rubber diode', etc.), I've always been puzzled by how nicely **the handover goes between the two transistors** as the input crosses zero. How come it works so well without any bumps?
+Assuming the cross-over issue is dealt with properly (resistors, diodes, 'rubber diode', etc.) I've always been puzzled by how nicely **the handover goes between the two transistors** as the input crosses zero. How come it works so well without any bumps?
 
-Moreover, as the input goes high, one of the transistors completely **turns OFF** without advserse consequences on the output.
+Moreover, as the input get higher in magnitude, one of the transistors **turns OFF** seamlessly along the way. Nothing is visible on the output signal. How come?
 
-Observing each transistor individually, I don't expect much linearity in their behaviour. 
-But some _magic_ is happening here, making the output just follow the input, nice and smoothly.
+How is that possible with such non-linear devices?
+It's as if the transistors **knew** how to realise the handover and act as a whole as a perfect voltage follower.
 
-## Case 1: no series resistors on the emitter
+## Case 1: class AB, no emitter resistor
 
 ### Small signal analysis
 
@@ -28,7 +28,7 @@ Derivation is quite similar to that of the common collector:
 
 
 ### Large signal analysis
-An amplifier is meant for power. It wouldn't be realistic to stay under the small signal hypothesis for a complete study.
+An amplifier is meant for power. It wouldn't be realistic to stay under the small signal hypothesis for a comprehensive study.
 
 Let's go big, and call our good old friend LTspice.
 
@@ -47,11 +47,7 @@ Seeing this, my first guess was that the NPN and PNP are too ideally matched. Su
 Though, I used a BC847 / BC857 and as far as I know, they are not matched _that closely_.
 
 In doubt, it would be interesting to **'detune'** their models.
-I didn't really want to bother looking up how to create a custom model in LTSpice.
 
-Also, at that point I had some clues about what was going on, and I wanted to plug in any model, not just a tweaked NPN/PNP part. 
-
-So I was off simulating the circuit myself. Turns out it's not as tricky as it sounds.
 
 ### Simulating a simplified large signal model, the DIY way.
 
@@ -139,9 +135,7 @@ Here comes the feedback loop, in a somewhat op-amp-ish form.
 
 It is worth noting that this is more of an abstract representation. In real life, we can't really dissociate the emitter potential from the current going to the load that easily.
 
-
-
-## Case 2: series resistors on the emitter
+## Case 2: class AB, with emitter resistor
 For practical implementations, it is common to see a resistor added in series with the emitter. Some books justify them for 'thermal stability purposes'.
 
 These resistors introduce further static dissipation, as well as a drop in the overall gain. So they are preferably kept to a very low value.
