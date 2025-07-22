@@ -1,14 +1,15 @@
 # A study on the class AB amplifier
 
-It's pretty common in literature to depict the class B and AB amplifiers as two bipolar transistors conducting alternatively as the input signal varies. The NPN takes care of the upper wave while the PNP handles the negative part.
+It's pretty common in literature to depict the class B and AB amplifiers as two bipolar transistors conducting alternatively as the input signal varies. The NPN conducts during the positive section of the signal, the PNP during the negative section.
 
 [TODO: add schematic]
 
-Class B and class AB differ in a subtle biasing that *pre-heats* the two transistors, thus avoiding the infamous **cross-over distortion** in a class B.
+Class B and class AB amplifiers differ essentially in their biasing: in class AB, it *pre-heats* (so to speak) the two transistors, thus avoiding the infamous **cross-over distortion** in class B, caused by the conduction threshold of BJTs.
 
-Assuming the cross-over issue is dealt with properly (resistors, diodes, 'rubber diode', etc.) I've always been puzzled by how nicely **the handover goes between the two transistors** as the input crosses zero. How come it works so well without any bumps?
+Once the cross-over issue has been fixed (by means of resistors, diodes, 'rubber diode', etc.) I've always been puzzled by how nicely the **handover** goes between the two transistors as the input crosses zero. How come it works so well without any bumps?
 
-Moreover, as the input get higher in magnitude, one of the transistors **turns OFF** seamlessly along the way. Nothing is visible on the output signal. How come?
+As the input get higher in magnitude, one of the transistors even **turns OFF** seamlessly along the way. Nothing is visible on the output signal. 
+How come?
 
 How is that possible with such non-linear devices?
 It's as if the transistors **knew** how to realise the handover and act as a whole as a perfect voltage follower.
