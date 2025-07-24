@@ -29,9 +29,9 @@ Derivation is quite similar to that of the common collector:
 
 
 ### Large signal analysis
-An amplifier is meant for power. It wouldn't be realistic to stay under the small signal hypothesis for a comprehensive study.
+Since an amplifier is meant for power, it wouldn't be realistic to limit ourselves to the small signal hypothesis.
 
-Let's go big, and call our good old friend LTspice.
+Let's call LTspice to the rescue to bring some hindsight.
 
 
 [TODO: figure]
