@@ -10,20 +10,30 @@
 % =============================================================================
 %
 %
+% Parameters:
+% - param.v_be_th   : threshold 'v_be' voltage (in V). Usually ~0.7V
+% - param.i_th      : collector current when v_be = v_be_th (in A). Usually a few mA
+% - param.g_m       : bjt transconductance (in A/V)
 
-function i_c = npn(v_be, i_0, g_m)
 
-  v_be_th = 0.7;
+function i_c = npn(v_be, param)
 
-  % Default current is 0A
+  % Initialise output
+  % Default collector current is 0A.
   i_c = zeros(size(v_be));
   
-  % Cutoff region: v_be < 0.7V
-  idxCutoff = (v_be < v_be_th);
-  i_c(idxCutoff) = v_be(idxCutoff)*i_0/v_be_th;
+  % -------------------
+  % CUTOFF REGION MODEL
+  % v_be < v_be_th
+  % -------------------
+  idxCutoff = (v_be < param.v_be_th);
+  i_c(idxCutoff) = v_be(idxCutoff)*param.i_th/param.v_be_th;
 
-  % Active forward region: v_be >= 0.7V
-  idxActive = (v_be > v_be_th);
+  % ---------------------
+  % ACTIVE FORWARD REGION
+  % v_be >= v_be_th
+  % ---------------------
+  idxActive = (v_be >= param.v_be_th);
   i_c(idxActive) = g_m*(v_be(idxCutoff) - v_be_th) + i_0;
   
 end
