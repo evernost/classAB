@@ -16,6 +16,10 @@
 % Just be patient.
 
 
+close all
+clear all
+clc
+
 
 % =============================================================================
 % SETTINGS
@@ -39,5 +43,17 @@ bjtParam.g_m = 100;
 % - a = -10 ... 10 Volts
 % - b = 1/r with r = 0.1 ... 100 ohms
 
-[i_fp_active, i_fp_cutoff] = fp_npn(a, b, param)
+for n = 1:nPts
+  
+  a = -10 + rand*(10-(-10));
+  r = 0.1 + rand*(100-0.1);
+  b = 1/r;
 
+
+  [i_fp_active, i_fp_cutoff] = fp_npn(a, b, bjtParam);
+
+  fprintf('a = %0.3f, b = %0.3f\n', a, b);
+  fprintf('- I (active) = %0.3f; npn(a+bI) = %0.3f\n', i_fp_active, npn(a+b*i_fp_active, bjtParam));
+  fprintf('- I (cutoff) = %0.3f; npn(a+bI) = %0.3f\n', i_fp_cutoff, npn(a+b*i_fp_cutoff, bjtParam));
+  fprintf('\n');
+end

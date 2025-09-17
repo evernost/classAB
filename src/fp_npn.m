@@ -38,9 +38,8 @@ function [i_fp_active, i_fp_cutoff] = fp_npn(a, b, param)
   % -------------
   % CUTOFF REGION
   % -------------
-  % I = u*v_be + v
   u = param.i_th/param.v_be_th;
-  v = 0
+  v = 0;
 
   % Solve the 'fixed point' equation I = npn(a + b*I)
   % I = u*(a + b*I) + v

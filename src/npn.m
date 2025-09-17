@@ -58,6 +58,6 @@ function i_c = npn(v_be, param)
   % v_be >= v_be_th
   % ---------------------
   idxActive = (v_be >= param.v_be_th);
-  i_c(idxActive) = param.g_m*(v_be(idxCutoff) - param.v_be_th) + param.i_th;
+  i_c(idxActive) = param.g_m*(v_be(idxActive) - param.v_be_th) + param.i_th;
   
 end
