@@ -46,7 +46,8 @@ bjtParam.g_m = 100;
 for n = 1:nPts
   
   a = -10 + rand*(10-(-10));
-  r = 0.1 + rand*(100-0.1);
+  rRange = logspace(-1,2, 500);
+  r = rRange(randperm(length(rRange), 1));
   b = 1/r;
 
 
@@ -57,3 +58,17 @@ for n = 1:nPts
   fprintf('- I (cutoff) = %0.3f; npn(a+bI) = %0.3f\n', i_fp_cutoff, npn(a+b*i_fp_cutoff, bjtParam));
   fprintf('\n');
 end
+
+
+% issue: 
+% a = 4.687, b = 0.191
+% - I (active) = -21.993; npn(a+bI) = 0.003
+% - I (cutoff) = 0.034; npn(a+bI) = 399.328
+
+% a = 0.991, b = 0.021
+% - I (active) = -27.473; npn(a+bI) = 0.003
+% - I (cutoff) = 0.007; npn(a+bI) = 29.100
+
+% a = 6.223, b = 8.829
+% - I (active) = -0.626; npn(a+bI) = 0.005
+% - I (cutoff) = 0.047; npn(a+bI) = 594.191
