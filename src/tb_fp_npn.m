@@ -50,12 +50,28 @@ for n = 1:nPts
   r = rRange(randperm(length(rRange), 1));
   b = 1/r;
 
-
-  [i_fp_active, i_fp_cutoff] = fp_npn(a, b, bjtParam);
+  [i_fp_active, i_fp_cutoff, i_fp_reverse] = fp_npn(a, b, bjtParam);
 
   fprintf('a = %0.3f, b = %0.3f\n', a, b);
-  fprintf('- I (active) = %0.3f; npn(a+bI) = %0.3f\n', i_fp_active, npn(a+b*i_fp_active, bjtParam));
-  fprintf('- I (cutoff) = %0.3f; npn(a+bI) = %0.3f\n', i_fp_cutoff, npn(a+b*i_fp_cutoff, bjtParam));
+  
+  if isnan(i_fp_reverse)
+    fprintf('- Reverse: -\n');
+  else
+    fprintf('- Reverse: I = %0.3f, npn(a+bI) = %0.3f, v_be = a+bI = %0.3f\n', i_fp_reverse, npn(a+b*i_fp_reverse, bjtParam), a+b*i_fp_reverse);
+  end
+
+  if isnan(i_fp_cutoff)
+    fprintf('- Cutoff : -\n');
+  else
+    fprintf('- Cutoff : I = %0.3f, npn(a+bI) = %0.3f, v_be = a+bI = %0.3f\n', i_fp_cutoff, npn(a+b*i_fp_cutoff, bjtParam), a+b*i_fp_cutoff);
+  end
+
+  if isnan(i_fp_active)
+    fprintf('- Active : -\n');
+  else
+    fprintf('- Active : I = %0.3f; npn(a+bI) = %0.3f, v_be = a+bI = %0.3f\n', i_fp_active, npn(a+b*i_fp_active, bjtParam), a+b*i_fp_active);
+  end
+
   fprintf('\n');
 end
 
@@ -72,3 +88,7 @@ end
 % a = 6.223, b = 8.829
 % - I (active) = -0.626; npn(a+bI) = 0.005
 % - I (cutoff) = 0.047; npn(a+bI) = 594.191
+
+% a = 6.006, b = 3.795
+% - I (active) = -1.402; npn(a+bI) = 0.005
+% - I (cutoff) = 0.044; npn(a+bI) = 547.297

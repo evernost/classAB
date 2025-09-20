@@ -12,48 +12,85 @@
 % =============================================================================
 % DESCRIPTION
 % =============================================================================
-% Solves the fixed point equation I = npn(a+bI)
-% Returns both the active forward and the cutoff solution.
+% Solves the fixed point equation for 'I': 
+% I = npn(a+bI) 
+% where a,b are constants.
+%
+% The function returns the solution for each region of the model:
+% - reverse
+% - cutoff
+% - active forward
 % 
-% Even though there are two solutions, only one of them makes sense depending 
-% on the context.
-
+% Most of the time, only one region can have a solution.
+% In that case, the regions that have no solutions will return "NaN".
+%
+% Though there can be special values of a, b where there is a valid physical 
+% solution in two or more regions.
+%
+% But in the real world, it usually leads to oscillations, or some of the
+% solutions will be 'repulsive' (i.e. unstable) and hence unreachable.
+%
+% DERIVATION
+% Solve the 'fixed point' equation I = npn(a + b*I)
+% Assuming I(v_be) = g_m*v_be + I_0, then:
+% I = g_m*(a + b*I) + I_0
+% I*(1 - g_m*b) = g_m*a + I_0
+% I = (g_m*a + I_0)/(1 - g_m*b)
 
 
 % =============================================================================
 % PARAMETERS
 % =============================================================================
-% Description is TODO.
+% None.
 
 
 
 % =============================================================================
 % SOLVER
 % =============================================================================
-function [i_fp_active, i_fp_cutoff] = fp_npn(a, b, param)
+function [i_fp_active, i_fp_cutoff, i_fp_reverse] = fp_npn(a, b, param)
 
   % Model the function I = npn(v_be) as I = u*v_be + v
   % 'u' and 'v' have different values depending on the operating mode.
 
+  % --------------
+  % REVERSE REGION
+  % --------------
+  g_m = 0;
+  I_0 = 0;
+
+  i_fp_reverse = (g_m*a + I_0)/(1 - g_m*b);
+  
+  v_op = a + b*i_fp_reverse;
+  if (v_op >= 0.0)
+    i_fp_reverse = NaN;
+  end
+
   % -------------
   % CUTOFF REGION
   % -------------
-  u = param.i_th/param.v_be_th;
-  v = 0;
+  g_m = param.i_th/param.v_be_th;
+  I_0 = 0;
 
-  % Solve the 'fixed point' equation I = npn(a + b*I)
-  % I = u*(a + b*I) + v
-  % I*(1 - u*b) = u*a + v
-  % I = (u*a + v)/(1 - u*b)
-  i_fp_cutoff = (u*a + v) ./ (1 - u*b);
+  i_fp_cutoff = (g_m*a + I_0)/(1 - g_m*b);
+
+  v_op = a + b*i_fp_cutoff;
+  if (v_op < 0.0) || (v_op >= param.v_be_th)
+    i_fp_cutoff = NaN;
+  end
 
   % ---------------------
   % ACTIVE FORWARD REGION
   % ---------------------
-  % I = u*v_be + v
-  u = param.g_m;
-  v = param.i_th - (param.g_m*param.v_be_th);
+  g_m = param.g_m;
+  I_0 = param.i_th - (param.g_m*param.v_be_th);
   
-  i_fp_active = (u*a + v) ./ (1 - u*b);
+  i_fp_active = (g_m*a + I_0)/(1 - g_m*b);
+
+  v_op = a + b*i_fp_cutoff;
+  if (v_op < param.v_be_th)
+    i_fp_active = NaN;
+  end
+
 
 end

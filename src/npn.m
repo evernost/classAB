@@ -47,24 +47,24 @@ function i_c = npn(v_be, param)
   % Default collector current is 0A.
   i_c = zeros(size(v_be));
   
-  % --------------------
-  % REVERSE REGION MODEL
+  % ---------------------
+  % MODEL: REVERSE REGION
   % v_be < 0
-  % --------------------
+  % ---------------------
   idxReverse = (v_be < 0);
   i_c(idxReverse) = 0.0;
 
-  % -------------------
-  % CUTOFF REGION MODEL
+  % --------------------
+  % MODEL: CUTOFF REGION
   % 0 <= v_be < v_be_th
-  % -------------------
-  idxCutoff = ((v_be >= 0.0) && (v_be < param.v_be_th));
+  % --------------------
+  idxCutoff = ((v_be >= 0.0) & (v_be < param.v_be_th));
   i_c(idxCutoff) = v_be(idxCutoff)*param.i_th/param.v_be_th;
 
-  % ---------------------
-  % ACTIVE FORWARD REGION
+  % ----------------------------
+  % MODEL: ACTIVE FORWARD REGION
   % v_be >= v_be_th
-  % ---------------------
+  % ----------------------------
   idxActive = (v_be >= param.v_be_th);
   i_c(idxActive) = param.g_m*(v_be(idxActive) - param.v_be_th) + param.i_th;
   
