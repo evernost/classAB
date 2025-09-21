@@ -50,8 +50,8 @@
 % =============================================================================
 function [i_fp_active, i_fp_cutoff, i_fp_reverse] = fp_npn(a, b, param)
 
-  % Model the function I = npn(v_be) as I = u*v_be + v
-  % 'u' and 'v' have different values depending on the operating mode.
+  % Model the function I = npn(v_be) as I = g_m*v_be + I_0
+  % 'g_m' and 'I_0' have different values depending on the operating mode.
 
   % --------------
   % REVERSE REGION
@@ -88,7 +88,7 @@ function [i_fp_active, i_fp_cutoff, i_fp_reverse] = fp_npn(a, b, param)
   i_fp_active = (g_m*a + I_0)/(1 - g_m*b);
 
   v_op = a + b*i_fp_cutoff;
-  if (v_op < param.v_be_th)
+  if ((v_op < param.v_be_th) || (i_fp_active < 0))
     i_fp_active = NaN;
   end
 
