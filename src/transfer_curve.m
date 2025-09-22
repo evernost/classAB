@@ -33,8 +33,8 @@ bjtParam.g_m = 100;
 % Simulation points
 nPts = 500;
 
-V_bias = 1.4;
-delta_V = linspace(-1.2, 1.2, nPts)';
+V_bias = 1.6;
+delta_V = linspace(-0.5, 0.5, nPts)';
 R_e = 4;
 R_load = 32;
 
@@ -52,8 +52,17 @@ R_load = 32;
 % - b = -R_e
 
 [I_s_active, I_s_cutoff, ~] = fp_npn(V_bias/2 - delta_V, -R_e, bjtParam);
+[I_d_active, I_d_cutoff, ~] = fp_npn(V_bias/2 + delta_V, -R_e, bjtParam);
 
-
+plot(...
+  delta_V, I_s_active, 'b', ...
+  delta_V, I_s_cutoff, 'b-.', ...
+  delta_V, -I_d_active, 'r', ...
+  delta_V, -I_d_cutoff, 'r-.' ...
+)
+grid on
+xlabel('\DeltaV = V_O - V_I')
+legend('I_S (active)', 'I_S (cutoff)', 'I_D (active)', 'I_D (cutoff)')
 
 
 

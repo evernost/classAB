@@ -62,10 +62,8 @@ function [i_fp_active, i_fp_cutoff, i_fp_reverse] = fp_npn(a, b, param)
   i_fp_reverse = (g_m*a + I_0)/(1 - g_m*b);
   
   v_op = a + b*i_fp_reverse;
-  if (v_op >= 0.0)
-    i_fp_reverse = NaN;
-  end
-
+  i_fp_reverse(v_op >= 0.0) = NaN;
+  
   % -------------
   % CUTOFF REGION
   % -------------
@@ -75,9 +73,7 @@ function [i_fp_active, i_fp_cutoff, i_fp_reverse] = fp_npn(a, b, param)
   i_fp_cutoff = (g_m*a + I_0)/(1 - g_m*b);
 
   v_op = a + b*i_fp_cutoff;
-  if (v_op < 0.0) || (v_op >= param.v_be_th)
-    i_fp_cutoff = NaN;
-  end
+  i_fp_cutoff((v_op < 0.0) | (v_op >= param.v_be_th)) = NaN;
 
   % ---------------------
   % ACTIVE FORWARD REGION
@@ -88,9 +84,6 @@ function [i_fp_active, i_fp_cutoff, i_fp_reverse] = fp_npn(a, b, param)
   i_fp_active = (g_m*a + I_0)/(1 - g_m*b);
 
   v_op = a + b*i_fp_cutoff;
-  if ((v_op < param.v_be_th) || (i_fp_active < 0))
-    i_fp_active = NaN;
-  end
-
+  i_fp_active((v_op < param.v_be_th) | (i_fp_active < 0)) = NaN;
 
 end
